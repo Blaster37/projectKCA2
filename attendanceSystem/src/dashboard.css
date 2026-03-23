@@ -1,0 +1,67 @@
+/* style.css */
+
+/* Center the container on the page */
+.container {
+  max-width: 400px;
+  max-height:fit-content;
+  margin: 50px auto;
+  padding: 30px;
+  background-color: #f7f9fc;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+
+}
+
+/* Heading style */
+.container h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Paragraph style */
+.container p {
+  color: #555;
+  margin-bottom: 20px;
+}
+
+/* Button style */
+.container button {
+  background-color: #4CAF50; /* Green */
+  color: white;
+  padding: 12px 25px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.container button:hover {
+  background-color: #45a049;
+}
+
+/* Status message */
+#status {
+  margin-top: 20px;
+  padding: 10px;
+  font-size: 16px;
+  color: #1a73e8;
+  font-weight: 500;
+}
+
+.qr-code {
+  margin: 20px auto;
+  width: 200px;
+  height: 200px;
+  padding: 10px;
+  background: #fff;
+  border: 2px solid #4CAF50;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
