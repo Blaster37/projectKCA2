@@ -1,41 +1,46 @@
 const { EntitySchema } = require("typeorm");
 
 module.exports = new EntitySchema({
-    name: "User",
-    tableName: "users",
+    name: "AttendanceSession",
+    tableName: "attendance_sessions",
     columns: {
         id: {
             primary: true,
             type: "int",
             generated: true
         },
-        name: {
+        unit_name: {
             type: "varchar"
         },
-        email: {
+        qr_token: {
             type: "varchar",
             unique: true
         },
-        password: {
-            type: "varchar"
+        qr_enabled: {
+            type: "boolean",
+            default: false
+        },
+        start_time: {
+            type: "timestamp",
+            nullable: true
+        },
+        end_time: {
+            type: "timestamp",
+            nullable: true
         }
     },
     relations: {
-        role: {
+        lecturer: {
             type: "many-to-one",
-            target: "Role",
+            target: "User",
             joinColumn: true,
+            inverseSide: "sessions",
             eager: true
         },
-        attendance: {
+        attendanceRecords: {
             type: "one-to-many",
             target: "Attendance",
-            inverseSide: "user"
-        },
-        sessions: {
-            type: "one-to-many",
-            target: "AttendanceSession",
-            inverseSide: "lecturer"
+            inverseSide: "session"
         }
     }
 });

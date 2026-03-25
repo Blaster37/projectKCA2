@@ -5,31 +5,36 @@ const AppDataSource =require("../config/data-source")
 const userRepo= ()=> AppDataSource.getRepository("User")
 const roleRepo = () => AppDataSource.getRepository("Role");
 
-exports.register = async(data) =>{
-    const{name,email,password,role_id}=data
+exports.register = async (data) => {
+  const { name, email, password } = data;
 
-//check if user exists
-const existing=await userRepo().findOneBy({email});
-if(existing){
+  // check if user exists
+  const existing = await userRepo().findOneBy({ email });
+  if (existing) {
     throw new Error("User already exists");
-}
-//hash password
-const hashedPassword=await bcrypt.hash(password,10)
+  }
 
-//find role
-const role=await roleRepo().findOneBy({id:role_id})
+  // hash password
+  const hashedPassword = await bcrypt.hash(password, 10);
 
-//create user
- const user = userRepo().create({
+  // 🔥 get default role (Student)
+  const role = await roleRepo().findOneBy({ id: 2 });
+
+  if (!role) {
+    throw new Error("Default role not found");
+  }
+
+  // create user
+  const user = userRepo().create({
     name,
     email,
-    password:hashedPassword,
-    role,
- })
+    password: hashedPassword,
+    role, // ✅ assign role object
+  });
 
- const savedUser = await userRepo().save(user);
+  const savedUser = await userRepo().save(user);
 
-return savedUser;
+  return savedUser;
 };
 
 exports.login = async (data) =>{

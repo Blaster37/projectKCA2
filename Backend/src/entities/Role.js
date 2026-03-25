@@ -11,14 +11,14 @@ module.exports = new EntitySchema({
         },
         role_name: {
             type: "varchar",
-            unique: true,
-        },
+            unique: true
+        }
     },
-    relations:{
-        users:{
-            type:"one-to-many",
-            target:"User",
-            inverseSide:"role"
+    relations: {
+        users: {
+            type: "one-to-many",
+            target: "User",
+            inverseSide: "role"
         }
     }
-})
+});

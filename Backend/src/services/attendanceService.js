@@ -1,49 +1,42 @@
-const AppDataSource = require("../config/data-source");
+const  AppDataSource  = require("../config/data-source");
+const Attendance = require("../entities/Attendance");
+const AttendanceSessionService = require("./AttendanceSessionService");
+const User = require("../entities/User");
 
-const attendanceRepo = AppDataSource.getRepository("Attendance");
-const userRepo = AppDataSource.getRepository("User");
+const attendanceRepository = () => AppDataSource.getRepository("Attendance");
 
-class AttendanceService {
-  // 1️⃣ Add attendance for a student
-  static async createAttendance({ studentId, date, unit_name, admission_no }) {
-    // Find the student
-    const student = await userRepo.findOneBy({ id: studentId });
-    if (!student) {
-      throw new Error("Student not found");
-    }
+const AttendanceService = {
+  markAttendance: async (qr_token, admission_no, userId) => {
+  // 1. Find session by QR token
+  const session = await AttendanceSessionService.getByToken(qr_token);
+  if (!session) throw new Error("Invalid QR token");
+  if (!session.qr_enabled) throw new Error("QR code is disabled");
 
-    // Create attendance record
-    const attendance = attendanceRepo.create({
-      date,
-      unit_name,
-      admission_no,
-      user: student,
-    });
+  // 2. Find student by userId (logged-in user)
+  const user = await AppDataSource.getRepository("User").findOne({ where: { id: userId } });
+  if (!user) throw new Error("Student not found");
 
-    // Save to database
-    const savedAttendance = await attendanceRepo.save(attendance);
-    return savedAttendance;
+  // 3. Prevent double marking
+  const existing = await attendanceRepository().findOne({
+    where: { user: { id: user.id }, session: { id: session.id } }
+  });
+  if (existing) throw new Error("Attendance already marked");
+
+  // 4. Create attendance record
+  const attendance = attendanceRepository().create({
+    date: new Date(),
+    unit_name: session.unit_name,
+    admission_no, // entered by student
+    user: { id: user.id },
+    session: { id: session.id }
+  });
+
+  return await attendanceRepository().save(attendance);
+},
+
+  getSessionAttendance: async (sessionId) => {
+    return await attendanceRepository().find({ where: { session: { id: sessionId } } });
   }
-
-  // 2️⃣ Get all attendance for a student
-  static async getAttendanceByStudent(studentId) {
-    const attendances = await attendanceRepo.find({
-      where: { user: { id: studentId } },
-      order: { date: "DESC" },
-      relations: ["user"], // eager: true also works, but this is explicit
-    });
-
-    return attendances;
-  }
-
-  // 3️⃣ Get all attendance (optional, for admin)
-  static async getAllAttendance() {
-    const attendances = await attendanceRepo.find({
-      order: { date: "DESC" },
-      relations: ["user"],
-    });
-    return attendances;
-  }
-}
+};
 
 module.exports = AttendanceService;

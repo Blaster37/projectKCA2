@@ -6,6 +6,8 @@ const cors=require("cors")
 const AppDataSource=require("./config/data-source")
 const authRoutes = require("./routes/authRoutes");
 const attendanceRoutes=require("./routes/attendanceRoutes")
+const attendanceSessionRoutes = require("./routes/attendanceSessionRoutes");
+
 
 
 //initialize Express app
@@ -20,8 +22,9 @@ app.use(express.urlencoded({ extended: true }));
 
 
 //Routes
-app.use("/api/auth",authRoutes)
-app.use("/api/attendance",attendanceRoutes)
+app.use("/auth",authRoutes)
+app.use("/attendance",attendanceRoutes)
+app.use("/attendance-session", attendanceSessionRoutes);
 
 app.get("/",(req,res)=> {
     res.send("API is running 🚀")

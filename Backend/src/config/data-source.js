@@ -9,7 +9,7 @@ const AppDataSource = new DataSource({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
 
-  synchronize: true, // auto create tables (dev only)
+  synchronize: false, // auto create tables (dev only)
   logging: false,
 
   entities: ["src/entities/*.js"],
