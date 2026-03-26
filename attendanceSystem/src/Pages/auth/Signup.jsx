@@ -6,6 +6,10 @@ import {
   Typography,
   Box,
   InputAdornment,
+  FormControl,
+  Select,
+  MenuItem,
+  InputLabel
 } from "@mui/material";
 import { Person, Email, Lock } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +20,7 @@ const Signup = () => {
     name: "",
     email: "",
     password: "",
+    role_id:""
   });
 
   const navigate = useNavigate();
@@ -111,6 +116,20 @@ const Signup = () => {
             ),
           }}
         />
+         {/* 🔥 ROLE SELECT */}
+        <FormControl fullWidth margin="normal">
+          <InputLabel>Select Role</InputLabel>
+          <Select
+            name="role_id"
+            value={form.role_id}
+            label="Select Role"
+            onChange={handleChange}
+          >
+            <MenuItem value={1}>Lecturer</MenuItem>
+            <MenuItem value={2}>Student</MenuItem>
+           
+          </Select>
+        </FormControl>
 
         <Button
           variant="contained"
