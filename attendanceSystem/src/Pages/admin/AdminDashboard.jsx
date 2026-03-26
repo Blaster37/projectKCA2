@@ -218,7 +218,7 @@ const AdminDashboard = () => {
               <Paper elevation={4} sx={{ p: 3 }}>
                 <Stack spacing={1}>
                   <Typography variant="h6">{session.unit_name}</Typography>
-                  <Typography variant="body2">Lecturer: {session.lecturer.name}</Typography>
+                  
                   <Typography variant="body2">
                     Time: {new Date(session.start_time).toLocaleString()} -{" "}
                     {new Date(session.end_time).toLocaleString()}
@@ -330,9 +330,7 @@ const AdminDashboard = () => {
               <TableCell sx={{ fontWeight: "bold" }}>
                 Date
               </TableCell>
-              <TableCell sx={{ fontWeight: "bold" }}>
-                Student Name
-              </TableCell>
+              
             </TableRow>
           </TableHead>
 
@@ -351,7 +349,7 @@ const AdminDashboard = () => {
                 <TableCell>
                   {new Date(att.date).toLocaleDateString()}
                 </TableCell>
-                <TableCell>{att.user?.name}</TableCell>
+               
               </TableRow>
             ))}
           </TableBody>

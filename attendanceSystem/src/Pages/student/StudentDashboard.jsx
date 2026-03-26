@@ -159,7 +159,7 @@ const StudentDashboard = () => {
                       }}
                     >
                       <QRCodeCanvas
-                        value={`http://localhost:5173/mark-attendance?token=${session.qr_token}`}
+                        value={` http://192.168.100.9:5173/mark-attendance?token=${session.qr_token}`}
                         size={200}
                       />
                     </Box>
